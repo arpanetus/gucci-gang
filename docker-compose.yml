@@ -1,0 +1,10 @@
+version: '3'
+
+
+services:
+  neo4j:
+    image: bitnami/neo4j:latest
+    ports:
+      - '7474:7474'
+      - '7473:7473'
+      - '7687:7687'

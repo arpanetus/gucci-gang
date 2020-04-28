@@ -1,8 +1,8 @@
  # gucci-gang
- 
+
  ## run:
- 
+
     $ docker-compose up -d
-    $ yarn start
- 
- 
+    $ yarn watch
+
+

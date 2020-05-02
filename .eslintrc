@@ -9,7 +9,9 @@
   ],
   "globals": {
     "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "SharedArrayBuffer": "readonly",
+    "process": true,
+    "__dirname": true,
   },
   "parserOptions": {
     "ecmaVersion": 2018,

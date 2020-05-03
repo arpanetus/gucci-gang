@@ -77,7 +77,7 @@ server.applyMiddleware({app: index, path});
     })
   }
   runConfForEntities(["KeyValueContent", "FOG", "SOG"], createConstraint)
-  setTimeout(()=>runConfForEntities(["KeyValueContent", "FOG", "SOG"], callUuidSet), 5)
+  setTimeout(()=>runConfForEntities(["KeyValueContent", "FOG", "SOG"], callUuidSet), 2000)
 
 })();
 

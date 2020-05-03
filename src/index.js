@@ -77,9 +77,13 @@ server.applyMiddleware({app: index, path});
     })
   }
   runConfForEntities(["KeyValueContent", "FOG", "SOG"], createConstraint)
-  runConfForEntities(["KeyValueContent", "FOG", "SOG"], callUuidSet)
+  setTimeout(()=>runConfForEntities(["KeyValueContent", "FOG", "SOG"], callUuidSet), 5)
+
 })();
 
 index.listen({port, path}, () => {
   console.log(`GraphQL server ready at http://localhost:${port}${path}`);
 });
+
+
+// 

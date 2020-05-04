@@ -11,14 +11,12 @@ import fs from 'fs'
 dotenv.config()
 
 const argv = yargs
-  .alias('r', 'run')
-  .alias('l', 'log')
+  .command('r', 'run')
+  .command('l', 'log')
   .argv
 
-console.log()
-
 if(argv._[0]==='log') {
-  fs.writeFile('public/helloworld.graphql', mutations, function (err) {
+  fs.writeFile('public/mutations.graphql', mutations, function (err) {
     if (err) return console.log(err)
   })
 }

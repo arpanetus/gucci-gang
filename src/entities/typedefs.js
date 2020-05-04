@@ -24,15 +24,17 @@ type SOG {
 }
 
 
-type Query {
-  sogsAsCourses: [SOG]
-    @cypher(
-      statement: "MATCH (s:SOG)-[:HAS_CONTENT]->(kv:KeyValueContent {key: \\"hierarchy\\", value: \\"0\\", type: \\"int\\"}) RETURN s"
-    )
+#type Query {
+  # SOG(filter: [_KeyValueContentFilter]): [SOG]
 
-  sogChildren(uuid_str: ID!): [SOG]
-    @cypher(
-        statement: "MATCH (s:SOG {uuid: $uuid_str})-[:DEPENDS_ON]->(children:SOG) RETURN children"
-     )
-}
+  # sogsAsCourses: [SOG]
+  #   @cypher(
+  #     statement: "match (s:SOG)-[:HAS_CONTENT]->(:KeyValueContent {key:'hierarchy', value:'0'}) match (s:SOG)-[:HAS_CONTENT]->(kv) WITH {uuid: s.uuid, contents: collect(kv)} AS sog RETURN sog"
+  #   )
+  #
+  # sogChildren(uuid_str: ID!): [SOG]
+  #   @cypher(
+  #       statement: "MATCH (s:SOG {uuid: $uuid_str})-[:DEPENDS_ON]->(children:SOG) RETURN children"
+  #    )
+#}
 `

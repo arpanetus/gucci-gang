@@ -10,7 +10,8 @@
     "transpile": "babel ./src --out-dir dist",
     "clean": "rm -rf dist-server",
     "populate": "./node_modules/.bin/babel-node src/entities/populate.js run",
-    "populog": "./node_modules/.bin/babel-node src/entities/populate.js log"
+    "populog": "./node_modules/.bin/babel-node src/entities/populate.js log",
+    "post-config": "./node_modules/.bin/babel-node src/entities/post-config-db.js"
   },
   "dependencies": {
     "@babel/node": "^7.8.7",
@@ -20,7 +21,6 @@
     "apollo-link-http": "^1.5.17",
     "apollo-server": "^2.11.0",
     "apollo-server-express": "^2.12.0",
-    "babel-node": "^0.0.1-security",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",

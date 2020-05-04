@@ -58,27 +58,40 @@ const keys = {
   datatypes_desc: uuid4(),
   datatypes_sog: uuid4(),
 
+  java_programming_hier: uuid4(),
   java_programming_title: uuid4(),
   java_programming_desc: uuid4(),
   java_programming_sog: uuid4(),
+
+  discrete_math_hier: uuid4(),
+  discrete_math_title: uuid4(),
+  discrete_math_desc: uuid4(),
+  discrete_math_sog: uuid4(),
+
 }
 
 const iterator = namegen()
 
-const createKV = (X, type) => ((ktv) =>
+const createKV = (X, type, hierval=0) => ((ktv) =>
   `${iterator.next().value}: CreateKeyValueContent(
     uuid: "${keys[`${X}_${type}`]}",
     ${ktv}
   ) {
     uuid
-  }` )(type === "desc"?
-    `key:"description"
+  }` )(type === "desc"
+  ?
+    `key: "description"
     type: "markdown"
     value: "# ${X}"`
-  :
-    `key:"title"
+  : type === "title"
+    ?
+    `key: "title"
     type: "string"
-    value: "${X}"`)
+    value: "${X}"`
+    :
+    `key: "hierarchy"
+    type: "int"
+    value: "${hierval}"`)
 
 const createXY = (X, Y) =>
   `${iterator.next().value}: Create${Y}(
@@ -97,9 +110,8 @@ const addYContents = (X, Y, type) =>
     }
   }`
 
-
-const addXFogYPrerequisite = (X, Y) =>{
-  return `${iterator.next().value}: AddFOGPrerequisites(
+const addXFogYPrerequisite = (X, Y) =>
+  `${iterator.next().value}: AddFOGPrerequisites(
     from: {uuid: "${keys[`${X}_fog`]}"}
     to: {uuid: "${keys[`${Y}_fog`]}"}
   ) {
@@ -107,8 +119,6 @@ const addXFogYPrerequisite = (X, Y) =>{
       uuid
     }
   }`
-}
-
 
 const addSogFogs = (sog, fog) =>
   `${iterator.next().value}: AddSOGFogs(
@@ -131,7 +141,6 @@ const addSogChild = (sog, childSog) =>
   }`
 
 
-
 const createXFog = (X) => createXY(X, "FOG")
 const createXSog = (X) => createXY(X, "SOG")
 
@@ -140,11 +149,12 @@ const addSogContents = (X, type) => addYContents(X, "SOG", type)
 
 const createDesc = (X) => createKV(X, "desc")
 const createTitle = (X) => createKV(X, "title")
+const createHier = (X) => createKV(X, "hier", 0)
 const addFogDesc = (X) => addFogContents(X, "desc")
 const addFogTitle = (X) => addFogContents(X, "title")
 const addSogDesc = (X) => addSogContents(X, "desc")
 const addSogTitle = (X) => addSogContents(X, "title")
-
+const addSogHier = (X) => addSogContents(X, "hier")
 const createXFogAndAddItsContents = (X) => `
   ${createDesc(X)}
   ${createTitle(X)}
@@ -187,8 +197,14 @@ const createdDatatypesChildren = createMFogsAndItsContents(datatypesChildren)
 const addedOopFogs = addXSogMFogs("oop", oopChildren)
 const addedDatatypesFogs = addXSogMFogs("datatypes", datatypesChildren)
 
-const createdJavaAndJavaChildren = createMSogsAndItsContents(
-  ["oop", "datatypes", "java_programming"])
+const createdJavaDiscAndJavaChildren = createMSogsAndItsContents(
+  ["oop", "datatypes", "java_programming", "discrete_math"])
+
+const createdJavaHier = createHier("java_programming")
+const createdDiscHier = createHier("discrete_math")
+
+const addedJavaHier = addSogHier("java_programming")
+const addedDiscHier = addSogHier("discrete_math")
 
 const addedJavaChildren = addXSogMChildren(
   "java_programming",
@@ -204,7 +220,11 @@ export default /* GraphQL */ `
 mutation {
   ${createdOopChildren}
   ${createdDatatypesChildren}
-  ${createdJavaAndJavaChildren}
+  ${createdJavaDiscAndJavaChildren}
+  ${createdDiscHier}
+  ${createdJavaHier}
+  ${addedDiscHier}
+  ${addedJavaHier}
   ${addedOopFogs}
   ${addedDatatypesFogs}
   ${addedJavaChildren}

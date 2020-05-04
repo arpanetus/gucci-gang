@@ -1,8 +1,56 @@
  # gucci-gang
 
+
+
  ## run:
+ first you need to up the containers
+ ```shell script
+$ docker-compose up -d
+ ```
 
-    $ docker-compose up -d
-    $ yarn watch
+then you probably have to download the deps(I couldn't solve dockers `ADD` problem :c)
+```shell script
+$ docker-compose exec neo4j bash
+# cd plugins
+# wget ${APOC_URI} ; wget ${GRAPHQL_URI}
+# exit
+$ docker-compose restart
+```
+
+then you can run:
+```shell script
+$ yarn postconfig
+$ yarn watch
+```
+
+populate some data:
+```shell script
+$ yarn populate
+```
+
+show the population-mutations:
+```shell script
+$ yarn populog
+$ cat public/seed-mutations.graphql
+```
 
 
+ ## graphql
+
+In the url below you can look for schema and docs:
+
+http://localhost:4001/graphql
+
+
+static-files(don't work for now): http://localhost:4001/static
+
+all the mutation stuff may lie in `public/seed-mutations.graphql`
+
+
+I'll add other how-to's later.
+Now I need to implement only:
+ - proper search queries
+ - strapi bind
+ - issues
+ - community stuff
+ - user add/reg(I guess using neo4j as regular backend is ok, since we're using graphql)

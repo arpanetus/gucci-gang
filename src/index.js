@@ -9,6 +9,9 @@ dotenv.config();
 
 const app = express();
 
+// server the damn static files pls
+app.use('/static', express.static('public'))
+
 const schema = makeAugmentedSchema({
   typeDefs
 });

@@ -1,0 +1,23 @@
+type KeyValueContent {
+    uuid: ID!
+    key: String
+    type: String
+    value: String
+}
+
+type FOG {
+    uuid: ID!
+    contents: [KeyValueContent] @relation(name: "HAS_CONTENT", direction: "OUT")
+    prerequisites: [FOG] @relation(name: "DEPENDS_ON", direction: "OUT")
+    postrequisites: [FOG] @relation(name: "DEPENDS_ON", direction: "IN")
+    partOfSog: [SOG] @relation(name: "DEPENDS_ON", direction: "IN")
+}
+
+
+type SOG {
+    uuid: ID!
+    contents: [KeyValueContent] @relation(name: "HAS_CONTENT", direction: "OUT")
+    children: [SOG] @relation(name: "DEPENDS_ON", direction: "OUT")
+    parents: [SOG] @relation(name: "DEPENDS_ON", direction: "IN")
+    fogs: [FOG] @relation(name: "DEPENDS_ON", direction: "OUT")
+}

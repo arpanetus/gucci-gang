@@ -1,6 +1,6 @@
 'use strict';
 import { typeDefs } from "entities/typedefs";
-import { resolvers } from 'entities/resolvers';
+// import { resolvers } from 'entities/resolvers';
 import { ApolloServer } from "apollo-server-express";
 import { driver } from 'driver'
 import express from "express";
@@ -15,7 +15,6 @@ index.use('/static', express.static('public'))
 
 const schema = makeAugmentedSchema({
   typeDefs,
-  resolvers
 });
 
 const server = new ApolloServer({

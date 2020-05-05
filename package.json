@@ -6,12 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "./node_modules/.bin/nodemon --watch src --ext js,graphql --exec babel-node  src/index.js",
-    "build": "babel src -d build && shx cp .env build && shx cp src/seed/schema.graphql build",
-    "now-build": "babel src -d build && shx cp .env build && shx cp src/seed/schema.graphql build",
+    "build": "babel src -d build && shx cp .env build && shx cp src/schema.graphql build",
+    "now-build": "babel src -d build && shx cp .env build && shx cp src/schema.graphql build",
     "watch": "npm run build && node build/index.js",
-    "populate": "./node_modules/.bin/babel-node src/seed/seed-db.js",
-    "populog": "./node_modules/.bin/babel-node src/seed/seed-log.js",
-    "post-config": "./node_modules/.bin/babel-node src/post-config.js"
+    "populate": "./node_modules/.bin/babel-node src/scripts/seed/seed-db.js",
+    "populog": "./node_modules/.bin/babel-node src/scripts/seed/seed-log.js",
+    "flush": "./node_modules/.bin/babel-node src/scripts/flush-db.js",
+    "post-config": "./node_modules/.bin/babel-node src/scripts/post-config-db.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -23,6 +24,7 @@
     "apollo-server-express": "^2.13.0",
     "dotenv": "^7.0.0",
     "express": "^4.17.1",
+    "graphql-auth-directives": "^2.2.0",
     "graphql-tag": "^2.10.1",
     "neo4j-driver": "^4.0.2",
     "neo4j-graphql-js": "^2.14.0",

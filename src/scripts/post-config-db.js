@@ -17,7 +17,7 @@ RETURN label, installed, properties;
 const postConfig = () => {
   const runConfForEntities = (entities, queryFunc) => {
     return entities.map(queryFunc).forEach(query=>{
-      const confSession = driver.session(neo4j.session.WRITE);
+      const confSession = driver.session({defaultAccessMode: neo4j.session.WRITE});
       confSession.run(query).subscribe({
         onCompleted: () => {
           console.log(`${query}`);

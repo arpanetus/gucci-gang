@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import mutations from "seed/seed-mutations"
+import mutations from "scripts/seed/seed-mutations"
 import fs from 'fs'
 
 dotenv.config()

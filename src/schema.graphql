@@ -3,6 +3,8 @@ type KeyValueContent {
     key: String
     type: String
     value: String
+    order: Int
+    orderForField: String
 }
 
 type FOG {

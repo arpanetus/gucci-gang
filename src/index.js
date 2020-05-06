@@ -2,6 +2,8 @@ import { typeDefs } from "./graphql-schema";
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import driver from 'driver';
+import client from 'client';
+import resolvers from 'resolvers'
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 import dotenv from 'dotenv';
 
@@ -13,7 +15,8 @@ const app = express();
 app.use('/static', express.static('public'))
 
 const schema = makeAugmentedSchema({
-  typeDefs
+  typeDefs,
+  resolvers: resolvers(client)
 });
 
 

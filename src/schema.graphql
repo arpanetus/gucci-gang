@@ -23,3 +23,16 @@ type SOG {
     parents: [SOG] @relation(name: "DEPENDS_ON", direction: "IN")
     fogs: [FOG] @relation(name: "DEPENDS_ON", direction: "OUT")
 }
+
+type File {
+  filename: ID!
+  mimetype: String!
+  encoding: String!
+}
+
+scalar Upload
+
+type Mutation {
+  DeleteFileAndRemoveFromDb(filename:ID!): File
+  UploadFile(file: Upload!): File!
+}

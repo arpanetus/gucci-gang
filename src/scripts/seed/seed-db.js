@@ -5,13 +5,9 @@ import seedmutations from "scripts/seed/seed-mutations";
 import fetch from "node-fetch";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import client from "client";
 
 dotenv.config();
-
-const client = new ApolloClient({
-  link: new HttpLink({ uri: process.env.GRAPHQL_URI, fetch }),
-  cache: new InMemoryCache()
-});
 
 client
   .mutate({

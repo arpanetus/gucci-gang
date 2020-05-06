@@ -8,7 +8,7 @@
     "start-dev": "./node_modules/.bin/nodemon --watch src --ext js,graphql --exec babel-node  src/index.js",
     "build": "babel src -d build && shx cp .env build && shx cp src/schema.graphql build",
     "now-build": "babel src -d build && shx cp .env build && shx cp src/schema.graphql build",
-    "watch": "npm run build && node build/index.js",
+    "watch": "./node_modules/.bin/babel-node src/index.js",
     "populate": "./node_modules/.bin/babel-node src/scripts/seed/seed-db.js",
     "populog": "./node_modules/.bin/babel-node src/scripts/seed/seed-log.js",
     "flush": "./node_modules/.bin/babel-node src/scripts/flush-db.js",
@@ -26,9 +26,15 @@
     "express": "^4.17.1",
     "graphql-auth-directives": "^2.2.0",
     "graphql-tag": "^2.10.1",
+    "graphql-upload": "^10.0.0",
+    "mime-types": "^2.1.27",
     "neo4j-driver": "^4.0.2",
     "neo4j-graphql-js": "^2.14.0",
     "node-fetch": "^2.6.0"
+  },
+  "resolutions": {
+    "**/**/fs-capacitor": "^5.0.0",
+    "**/graphql-upload": "^9.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -53,5 +59,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "engines": {
+    "node": "<=12.16.1"
   }
 }

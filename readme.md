@@ -42,15 +42,12 @@ In the url below you can look for schema and docs:
 http://localhost:4001/graphql
 
 
-static-files(don't work for now): http://localhost:4001/static
+static-files : http://localhost:4001/static
 
 all the mutation stuff may lie in `public/seed-mutations.graphql`
 
 
-I'll add other how-to's later.
-Now I need to implement only:
- - proper search queries
- - strapi bind
+ ## TODO:
+ - user add/reg(I guess using neo4j as regular backend is ok, since we're using graphql)
  - issues
  - community stuff
- - user add/reg(I guess using neo4j as regular backend is ok, since we're using graphql)

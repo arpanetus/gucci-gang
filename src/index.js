@@ -1,4 +1,4 @@
-import { typeDefs } from "./graphql-schema";
+import { typeDefs } from "graphql-schema";
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import driver from 'driver';
@@ -16,7 +16,7 @@ app.use('/static', express.static('public'))
 
 const schema = makeAugmentedSchema({
   typeDefs,
-  resolvers: resolvers(client)
+  resolvers: resolvers(client, driver)
 });
 
 

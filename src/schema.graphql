@@ -36,3 +36,26 @@ type Mutation {
   DeleteFileAndRemoveFromDb(filename:ID!): File
   UploadFile(file: Upload!): File!
 }
+
+type Node {
+  uuid: ID!
+  type: String
+}
+
+type Rel {
+  from: String
+  to: String
+}
+
+type RST {
+  nodes: [Node]
+  nodeRels: [Rel]
+  nodeContents: [KeyValueContent]
+  nodeContentRels: [Rel]
+}
+
+scalar Void
+
+type Query {
+  RecursiveSOGTree(uuid: ID!): RST
+}

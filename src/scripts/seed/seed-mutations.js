@@ -115,7 +115,9 @@ const createKV = (X, key, val, type, orderForField=null, order=null) =>
     order: ${order}
     orderForField: "${orderForField}"
     `:`uuid: "${keys[`${X}_${key}`]}"
-    value: "${val}"`)
+    value: "${val}"
+    order: null
+    orderForField: null`)
 
 
 const createXY = (X, Y) =>

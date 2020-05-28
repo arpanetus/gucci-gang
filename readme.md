@@ -8,14 +8,8 @@
 $ docker-compose up -d
  ```
 
-then you probably have to download the deps(I couldn't solve dockers `ADD` problem :c)
-```shell script
-$ docker-compose exec neo4j bash
-# cd plugins
-# wget ${APOC_URI} ; wget ${GRAPHQL_URI}
-# exit
-$ docker-compose restart
-```
+I could solve ADD problem, it was actually the volume which was defined in docker-compose.yml.
+Thus one doesn't have to run mumbo jumbo commands in order to run the container
 
 then you can run:
 ```shell script

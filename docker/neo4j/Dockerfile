@@ -11,3 +11,5 @@ ENV GRAPHQL_URI https://github.com/neo4j-graphql/neo4j-graphql/releases/download
 RUN wget -q ${APOC_URI} -P plugins/ ; wget -q ${GRAPHQL_URI} -P plugins/
 
 EXPOSE 7474 7473 7687
+
+CMD ["neo4j"]

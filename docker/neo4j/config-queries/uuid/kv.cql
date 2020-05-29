@@ -1,0 +1,1 @@
+CREATE CONSTRAINT ON (el:KeyValueContent) ASSERT el.uuid IS UNIQUE;

@@ -1,0 +1,6 @@
+.idea
+.git
+build
+docker
+node_modules
+public/*

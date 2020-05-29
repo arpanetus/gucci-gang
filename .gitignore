@@ -4,3 +4,4 @@ dist
 docker/neo4j/plugins
 public
 build
+.env

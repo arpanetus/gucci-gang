@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+
   neo4j:
     build: ./docker/neo4j/
     ports:
@@ -12,3 +13,17 @@ services:
       - NEO4J_apoc_export_file_enabled=true
       - NEO4J_apoc_uuid_enabled=true
       - NEO4J_dbms_shell_enabled=true
+
+  gucci-gang:
+    build:
+      context: ./
+      dockerfile: ./docker/gucci-gang/Dockerfile
+    command: node build/index.js
+    ports:
+      - 80:4001
+    env_file:
+      - .env
+    depends_on:
+      - neo4j
+    links:
+      - neo4j

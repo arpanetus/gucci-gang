@@ -1,12 +1,12 @@
 {
-  "name": "grand-stack-starter-api",
+  "name": "gucci-gang",
   "version": "0.0.1",
-  "description": "API app for GRANDstack",
+  "description": "API app for gucci-gang",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "./node_modules/.bin/nodemon --watch src --ext js,graphql --exec babel-node  src/index.js",
-    "build": "babel src -d build && shx cp .env build && shx cp src/schema.graphql build",
+    "build": "babel src -d build && shx cp src/schema.graphql build",
     "watch": "./node_modules/.bin/babel-node src/index.js",
     "populate": "./node_modules/.bin/babel-node src/scripts/seed/seed-db.js",
     "populog": "./node_modules/.bin/babel-node src/scripts/seed/seed-log.js",

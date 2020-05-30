@@ -20,6 +20,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd ~/gucci-gang
+            cd ~/gg-wrap/gucci-gang
             git pull origin master
             git status
+            cd ../
+            docker-compose up -d --build --remove-orphans
+

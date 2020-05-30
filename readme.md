@@ -8,16 +8,12 @@
 $ docker-compose up -d
  ```
 
-I could solve ADD problem, it was actually the volume which was defined in docker-compose.yml.
-Thus one doesn't have to run mumbo jumbo commands in order to run the container
-
 then you can run:
 ```shell script
-$ yarn postconfig
 $ yarn watch
 ```
 
-populate some data:
+populate some data (graphql server must be running):
 ```shell script
 $ yarn populate
 ```

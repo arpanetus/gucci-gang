@@ -12,9 +12,8 @@ RUN wget -q ${APOC_URI} -P plugins/ && \
 wget -q ${GRAPHQL_URI} -P plugins/
 
 COPY . .
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-RUN sh project-config.sh
+RUN chmod +x /docker-entrypoint.sh
 
-EXPOSE 7474 7473 7687
-
-CMD ["neo4j"]
+ CMD ["neo4j"]

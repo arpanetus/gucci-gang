@@ -8,22 +8,12 @@
 $ docker-compose up -d
  ```
 
-then you probably have to download the deps(I couldn't solve dockers `ADD` problem :c)
-```shell script
-$ docker-compose exec neo4j bash
-# cd plugins
-# wget ${APOC_URI} ; wget ${GRAPHQL_URI}
-# exit
-$ docker-compose restart
-```
-
 then you can run:
 ```shell script
-$ yarn postconfig
 $ yarn watch
 ```
 
-populate some data:
+populate some data (graphql server must be running):
 ```shell script
 $ yarn populate
 ```

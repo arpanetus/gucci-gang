@@ -4,8 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const flushDb = `MATCH (a) -[r] -> ()
-MATCH (x) DELETE a, r, x`
+const flushDb = `MATCH (n) DETACH DELETE n;`
 
 const runFlush = () => {
   const confSession = driver.session({defaultAccessMode: neo4j.session.WRITE});

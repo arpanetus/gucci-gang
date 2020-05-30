@@ -407,7 +407,6 @@ fi
 
 sendcql() {
   auth_data="$2"
-  echo "${auth_data}"
   for query in /var/lib/neo4j/config-queries/$1/*.cql; do
     cat "$query"
     cypher-shell -u neo4j -p "${auth_data#neo4j/}" "$(cat "$query")"
@@ -416,7 +415,6 @@ sendcql() {
 
 configure_db() {
   auth_data="$1"
-  echo "$auth_data"
   node_types="SOG, FOG, KeyValueContent."
 
   gosu neo4j:neo4j neo4j start

@@ -27,5 +27,6 @@ services:
       - .env
     depends_on:
       - neo4j
-    links:
-      - neo4j
+    volumes:
+      - ./public:/gucci-gang/public
+      - ./.env:/gucci-gang/build/.env

@@ -1,27 +1,33 @@
-type KeyValueContent {
-    uuid: ID!
-    key: String
-    type: String
-    value: String
-    order: Int
-    orderForField: String
+type KeyValueContent { # @hasScope(scopes:["contentmanager:write", "superuser:write"]) {
+  uuid: ID!
+  key: String
+  type: String
+  value: String
+  order: Int
+  orderForField: String
 }
 
-type FOG {
-    uuid: ID!
-    contents: [KeyValueContent] @relation(name: "HAS_CONTENT", direction: "OUT")
-    prerequisites: [FOG] @relation(name: "DEPENDS_ON", direction: "OUT")
-    postrequisites: [FOG] @relation(name: "DEPENDS_ON", direction: "IN")
-    partOfSog: [SOG] @relation(name: "DEPENDS_ON", direction: "IN")
+type FOG { # @hasScope(scopes:["contentmanager:write", "superuser:write"]) {
+  uuid: ID!
+  contents: [KeyValueContent] @relation(name: "HAS_CONTENT", direction: "OUT")
+  prerequisites: [FOG] @relation(name: "DEPENDS_ON", direction: "OUT")
+  postrequisites: [FOG] @relation(name: "DEPENDS_ON", direction: "IN")
+  partOfSog: [SOG] @relation(name: "DEPENDS_ON", direction: "IN")
 }
 
+type SOG { # @hasScope(scopes:["contentmanager:write", "superuser:write"]) {
+  uuid: ID!
+  contents: [KeyValueContent] @relation(name: "HAS_CONTENT", direction: "OUT")
+  children: [SOG] @relation(name: "DEPENDS_ON", direction: "OUT")
+  parents: [SOG] @relation(name: "DEPENDS_ON", direction: "IN")
+  fogs: [FOG] @relation(name: "DEPENDS_ON", direction: "OUT")
+  tagged_as: [Tag] @relation(name: "TAGGED", direction: "IN")
+}
 
-type SOG {
-    uuid: ID!
-    contents: [KeyValueContent] @relation(name: "HAS_CONTENT", direction: "OUT")
-    children: [SOG] @relation(name: "DEPENDS_ON", direction: "OUT")
-    parents: [SOG] @relation(name: "DEPENDS_ON", direction: "IN")
-    fogs: [FOG] @relation(name: "DEPENDS_ON", direction: "OUT")
+type Tag {
+  uuid: ID!
+  name: String
+  for: [SOG] @relation(name: "TAGGED", direction: "OUT")
 }
 
 type File {
@@ -33,8 +39,8 @@ type File {
 scalar Upload
 
 type Mutation {
-  DeleteFileAndRemoveFromDb(filename:ID!): File
-  UploadFile(file: Upload!): File!
+  DeleteFileAndRemoveFromDb(filename:ID!): File # @hasScope(scopes:["contentmanager:write", "superuser:write"])
+  UploadFile(file: Upload!): File! # @hasScope(scopes:["contentmanager:write", "superuser:write"])
 }
 
 type Node {
@@ -58,4 +64,19 @@ scalar Void
 
 type Query {
   RecursiveSOGTree(uuid: ID!): RST
+}
+
+
+enum Role {
+  simpleuser
+  contentmanager
+  superuser
+}
+
+type User #@isAuthenticated
+{
+  uuid: ID!
+  name: String
+  email: String
+  password: String
 }

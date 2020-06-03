@@ -30,43 +30,6 @@ type Tag {
   for: [SOG] @relation(name: "TAGGED", direction: "OUT")
 }
 
-type File {
-  filename: ID!
-  mimetype: String!
-  encoding: String!
-}
-
-scalar Upload
-
-type Mutation {
-  DeleteFileAndRemoveFromDb(filename:ID!): File # @hasScope(scopes:["contentmanager:write", "superuser:write"])
-  UploadFile(file: Upload!): File! # @hasScope(scopes:["contentmanager:write", "superuser:write"])
-}
-
-type Node {
-  uuid: ID!
-  type: String
-}
-
-type Rel {
-  from: String
-  to: String
-}
-
-type RST {
-  nodes: [Node]
-  nodeRels: [Rel]
-  nodeContents: [KeyValueContent]
-  nodeContentRels: [Rel]
-}
-
-scalar Void
-
-type Query {
-  RecursiveSOGTree(uuid: ID!): RST
-}
-
-
 enum Role {
   simpleuser
   contentmanager
@@ -76,7 +39,62 @@ enum Role {
 type User #@isAuthenticated
 {
   uuid: ID!
+  username: String
   name: String
   email: String
   password: String
+  role: Role
+}
+
+# is not used for all qs&ms
+type File {
+  filename: ID!
+  mimetype: String!
+  encoding: String!
+}
+
+# is not used for all qs&ms
+scalar Upload
+
+# is not used for all qs&ms
+type Node {
+  uuid: ID!
+  type: String
+}
+
+# is not used for all qs&ms
+type Rel {
+  from: String
+  to: String
+}
+
+# is not used for all qs&ms
+type RST {
+  nodes: [Node]
+  nodeRels: [Rel]
+  nodeContents: [KeyValueContent]
+  nodeContentRels: [Rel]
+}
+
+# is not used for all qs&ms
+scalar Void
+
+
+type Login {
+  token: String!
+  user: User!
+}
+
+type Query {
+  RecursiveSOGTree(uuid: ID!): RST
+  # This must be used for further instead of RecursiveSOGTree, but before make the query work
+  _RecSOGTree(uuid: ID!): RST @cypher(statement: "MATCH p = (:SOG {uuid: $uuid})-[d_o:DEPENDS_ON*0..]->(x)-[h_c:HAS_CONTENT*0..]->(c:KeyValueContent) WITH collect(DISTINCT x) as nodes, [d_o in collect(distinct last(d_o)) | {from:startNode(d_o).uuid,to:endNode(d_o).uuid}] as nodeRels, collect(DISTINCT c) as nodeContents, [h_c in collect(DISTINCT last(h_c)) | {from:startNode(h_c).uuid, to:endNode(h_c).uuid}] as nodeContentRels FOREACH (node in nodes | set node.type = apoc.coll.randomItem((labels(node)))) RETURN {nodes: nodes, nodeRels: nodeRels, nodeContents: nodeContents, nodeContentRels:nodeContentRels} as rst;")
+  login(username: String, password: String): Login
+  currentUser: User!
+}
+
+type Mutation {
+  DeleteFileAndRemoveFromDb(filename:ID!): File # @hasScope(scopes:["contentmanager:write", "superuser:write"])
+  UploadFile(file: Upload!): File! # @hasScope(scopes:["contentmanager:write", "superuser:write"])
+  register(username: String!, password: String!, email: String!, name: String!, role: Role): User!
 }

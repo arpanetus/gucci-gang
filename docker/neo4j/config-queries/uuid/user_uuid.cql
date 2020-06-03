@@ -1,0 +1,1 @@
+CREATE CONSTRAINT ON (el: User) ASSERT el.uuid IS UNIQUE;

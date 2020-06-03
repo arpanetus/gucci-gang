@@ -74,3 +74,31 @@ export class KeyValueContent {
     this.orderForField = orderForField
   }
 }
+
+export class User {
+  /**
+   *
+   * @param{string|null} uuid
+   * @param{string|null} username
+   * @param{string|null} name
+   * @param{string|null} email
+   * @param{number|null} password
+   * @param{string|null} role
+   * @constructor
+   */
+  constructor(
+    uuid = null,
+    username = null,
+    name = null,
+    email = null,
+    password = null,
+    role = null
+  ) {
+    this.uuid = uuid
+    this.username = username
+    this.name = name
+    this.email = email
+    this.password = password
+    this.role = role
+  }
+}

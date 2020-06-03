@@ -1,5 +1,5 @@
-import {session} from 'neo4j-driver';
-import {KeyValueContent, Node, Rel, RST} from './models';
+import {KeyValueContent, Node, Rel, RST} from '../db/models';
+import {arrObjToArrClazz, createSession, runAndGetResults} from 'db/tools';
 
 const RecursiveSOGResolveQuery =
   `MATCH p = (:SOG {uuid: $uuid})-[d_o:DEPENDS_ON*0..]->(x)-[h_c:HAS_CONTENT*0..]->(c:KeyValueContent)
@@ -9,27 +9,7 @@ collect(DISTINCT c) as nodeContents,
 [h_c in collect(DISTINCT last(h_c)) | {from:startNode(h_c).uuid, to:endNode(h_c).uuid}] as nodeContentRels
 FOREACH (node in nodes | set node.type = apoc.coll.randomItem((labels(node))))
 RETURN  nodes, nodeRels, nodeContents, nodeContentRels;`
-/**
- * @param {Driver} driver
- * @return function
- */
-const createSession = (driver) => {
-  return driver.session({defaultAccessMode: session.READ});
-}
-/**
- * @template T
- * @param{Array<Object>} arr
- * @param{T} clazz
- * @param{boolean} isRel
- * @return {Array<T>}
- */
-const arrObjToArrClazz = (arr, clazz, isRel = false) =>
-  arr.map((value, index) => {
-    const obj = new clazz()
-    for (const entry of Object.entries(isRel ? value : value.properties))
-      obj[entry[0]] = entry[1]
-    return obj
-  })
+
 /**
  *
  * @param {Session} session
@@ -37,7 +17,8 @@ const arrObjToArrClazz = (arr, clazz, isRel = false) =>
  * @return {Promise<RST>}
  */
 const runQuery = async (session, uuid) => {
-  const {records} = await session.run(RecursiveSOGResolveQuery, {uuid});
+  const {records} = await runAndGetResults(session, RecursiveSOGResolveQuery)
+  // const {records} = await session.run(RecursiveSOGResolveQuery, {uuid});
   const {nodes, nodeRels, nodeContents, nodeContentRels} = records[0].toObject();
   return new RST(
     arrObjToArrClazz(nodes, Node),
@@ -48,11 +29,14 @@ const runQuery = async (session, uuid) => {
 }
 /**
  * @param {Driver} driver
- * @return function
+ * @return RST
+ * @param parent
+ * @param context
+ * @param info
  */
-export default (driver) => async (
-  parent, {uuid}
+export default async (
+  parent, {uuid}, context, info
 ) => {
-  const session = createSession(driver)
+  const session = createSession(context.driver)
   return await runQuery(session, uuid)
 }

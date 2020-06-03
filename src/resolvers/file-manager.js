@@ -1,10 +1,11 @@
 import {v4 as uuid4} from 'uuid';
 import mime from 'mime-types';
 import gql from 'graphql-tag';
-import { ApolloClient } from 'apollo-client';
+import fs from "fs";
 
 export const genFileName = mimetype => `${uuid4()}.${mime.extension(mimetype)}`;
-
+// TODO: the existence of this class is extremely ugly, thereby it shall be rewritten
+//  whether on pure cql or by overriding default resolver from the augmented schema
 export class FileManager {
   _createString(filename, mimetype, encoding) {
     return `mutation {
@@ -75,4 +76,40 @@ export class FileManager {
       .catch(error => console.error(error));
     return fileData
   }
+}
+
+
+export const DeleteFileAndRemoveFromDb = async (parent, {filename}, context) => {
+  const path = `public/${filename}`
+  if (fs.existsSync(path))
+    fs.unlinkSync(path)
+  try {
+    const fm = new FileManager({filename}, context.client)
+    return (await fm.deleteFile()).data.DeleteFile
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export const UploadFile = async (parent, {file}, context) => {
+  const {createReadStream, filename, mimetype, encoding} = await file
+  const rs = createReadStream()
+  const newFilename = genFileName(mimetype)
+  const path = `public/${newFilename}`
+  const fm = new FileManager(
+    {filename: newFilename, mimetype, encoding}, context.client)
+  await fm.createFile()
+  await new Promise((resolve, reject) =>
+    rs
+      .on('error', async error => {
+        if (rs.truncated) {
+          await fm.deleteFile()
+          fs.unlinkSync(path)
+        }
+        reject(error)
+      })
+      .pipe(fs.createWriteStream(path))
+      .on('error', error => reject(error))
+      .on('finish', () => resolve()))
+  return {filename: newFilename, mimetype, encoding}
 }

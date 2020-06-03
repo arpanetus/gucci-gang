@@ -20,7 +20,7 @@ services:
     build:
       context: ./
       dockerfile: ./docker/gucci-gang/Dockerfile
-    command: node build/rst.js
+    command: node build/index.js
     ports:
       - 4001:4001
     env_file:

@@ -69,7 +69,7 @@ const getSuperUserCredentials = () => {
     username,
     email,
     password,
-    "role": "superuser",
+    role: "superuser",
     name: "superuser"
   });
   await session.close();

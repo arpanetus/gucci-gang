@@ -7,7 +7,7 @@ import {
   isUserNullOrDoesntExist
 } from './validators';
 import {session as Session} from 'neo4j-driver';
-import {createUserFunc, getUserFunc, refreshSessionIfClosedOrOutdated} from '../db/tools';
+import {createUserFunc, getUserFunc, refreshSessionIfClosedOrOutdated} from 'db/tools';
 import {AuthenticationError} from 'apollo-server-errors';
 import jwt from 'jsonwebtoken';
 

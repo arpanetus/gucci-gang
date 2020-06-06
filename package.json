@@ -22,7 +22,7 @@
     "apollo-link-http": "^1.5.15",
     "apollo-server": "^2.8.2",
     "apollo-server-errors": "^2.4.1",
-    "apollo-server-express": "^2.13.0",
+    "apollo-server-express": "^2.14.2",
     "bcrypt": "^4.0.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^7.0.0",
